@@ -87,11 +87,11 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .desc{margin:14px 0}
 .cta{display:grid;gap:10px;margin-top:18px}
 .cta button{min-height:54px;font-size:18px}
-.qrcard{margin-top:16px;display:grid;grid-template-columns:146px minmax(0,1fr);gap:16px;align-items:center;background:var(--sand);border-radius:18px;padding:16px}
+.qrcard{margin-top:16px;display:grid;grid-template-columns:196px minmax(0,1fr);gap:16px;align-items:center;background:var(--sand);border-radius:18px;padding:16px}
 .qrcard h3{font-size:22px}
 .qrcard p{margin:4px 0 8px;font-size:14px;color:var(--mute)}
-#qr{background:#fff;padding:8px;border-radius:12px;width:146px;height:146px;overflow:hidden;color:#1d3b2a;font-size:11px;overflow-wrap:anywhere}
-#qr img,#qr canvas{display:block;width:130px!important;height:130px!important}
+#qr{background:#fff;padding:8px;border-radius:12px;width:196px;height:196px;overflow:hidden;color:#1d3b2a;font-size:11px;overflow-wrap:anywhere}
+#qr img,#qr canvas{display:block;width:180px!important;height:180px!important;image-rendering:pixelated}
 .result{border-radius:16px;padding:14px 16px;margin-top:14px;background:#ffe3ec;color:#5a1029}
 .result h3{font-size:22px}
 table{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
@@ -212,7 +212,7 @@ const HOSTED=!(window.claude&&window.claude.use);
 const b64e=o=>btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
 const b64d=t=>JSON.parse(decodeURIComponent(escape(atob(t.replace(/-/g,'+').replace(/_/g,'/')))));
 const pack=L=>b64e([L.id,L.title,L.emoji,L.price,L.floor,L.tone,L.deadline,L.createdAt,L.category||'',L.area||'',L.sellerNick||'',L.sellerKey||'',String(L.desc||'').slice(0,80)]);
-function qrUrl(L){return HOSTED?location.href.split('#')[0]+'#haggle-'+L.id+'.'+pack(L):BASE+'#haggle-'+L.id}
+function qrUrl(L){return HOSTED?location.href.split('#')[0]+'#haggle-'+L.id+(L.id.startsWith('demo-')?'':'.'+pack(L)):BASE+'#haggle-'+L.id}
 const app=document.getElementById('app');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const won=n=>Number(n).toLocaleString('ko-KR')+'원';
@@ -448,7 +448,7 @@ function render(){
   app.innerHTML=r==='new'?newView():r==='item'?itemView(L):r==='haggle'?haggleView(L):r==='mybids'?myBidsView():r==='mysales'?mySalesView():listView();
   if(r==='haggle')mountHaggle(L);
   const q=document.getElementById('qr');
-  if(q){if(window.QRCode){try{new QRCode(q,{text:q.dataset.url,width:260,height:260,colorDark:'#1d3b2a',colorLight:'#ffffff'})}catch(e){q.textContent=q.dataset.url}}else{q.textContent='QR을 불러오지 못했어요: '+q.dataset.url}}
+  if(q){if(window.QRCode){try{new QRCode(q,{text:q.dataset.url,width:360,height:360,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.L})}catch(e){q.textContent=q.dataset.url}}else{q.textContent='QR을 불러오지 못했어요: '+q.dataset.url}}
 }
 
 /* ---------- 이벤트 ---------- */

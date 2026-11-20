@@ -40,7 +40,7 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .banner h2{font-size:clamp(22px,4vw,28px)}.banner p{margin:6px 0 0;font-size:14px;opacity:.92}
 .banner svg{width:96px;height:auto;animation:sway 3s ease-in-out infinite;transform-origin:50% 100%}
 @keyframes sway{50%{transform:rotate(4deg)}}
-.cats{display:flex;gap:8px;overflow-x:auto;margin:16px 0 6px;padding-bottom:4px}
+.cats{display:flex;gap:8px;overflow-x:auto;margin:16px 0 6px;padding-bottom:4px;scrollbar-width:none}
 .cats button{flex:none;min-height:38px;padding:6px 14px;border-radius:999px;background:var(--card);color:var(--ink);border:1.5px solid var(--line);font-weight:500;font-size:14px}
 .cats button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .bar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:4px 0;font-size:14px;color:var(--mute)}
@@ -122,12 +122,13 @@ th,td{text-align:left;padding:7px 4px;border-bottom:1px solid var(--line)}
 .meter i.on{background:#ff4f3a}
 .meter.happy i{background:var(--pink)}
 .stagearea{position:relative;z-index:2;flex:1 1 0;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:6px 0 8px}
-.bubble{flex:none;max-height:40%;overflow-y:auto;position:relative;max-width:86%;background:#fff;color:#1d2b22;border-radius:18px;padding:12px 16px;font-size:17px;font-weight:500;box-shadow:0 6px 18px #0002;min-height:48px;margin-bottom:6px}
+.bt{max-height:7.6em;overflow-y:auto;scrollbar-width:thin}
+.bubble{flex:none;position:relative;max-width:86%;background:#fff;color:#1d2b22;border-radius:18px;padding:12px 16px;font-size:17px;font-weight:500;box-shadow:0 6px 18px #0002;min-height:48px;margin-bottom:6px}
 .bubble::after{content:"";position:absolute;left:50%;bottom:-9px;margin-left:-9px;border:9px solid transparent;border-bottom:0;border-top-color:#fff}
 .bubble.ok{background:#fff0f5}.bubble.ok::after{border-top-color:#fff0f5}
 #cac{flex:1 1 0;min-height:90px;width:100%;max-width:400px;overflow:visible}
 .sheet{flex:none;position:relative;z-index:3;background:light-dark(#fffdf8,#18221b);color:var(--ink);border-radius:26px 26px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));box-shadow:0 -8px 24px #0002;display:grid;gap:10px}
-.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
 .chips button{flex:none;min-height:36px;padding:6px 12px;font-size:14px;background:var(--sand);color:var(--ink);border-radius:999px}
 .ask{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
 .ask .amt{font-size:22px;font-weight:700;text-align:right}
@@ -312,7 +313,7 @@ const BG=`<svg class="bgsvg" viewBox="0 0 480 900" preserveAspectRatio="xMidYMid
 <ellipse cx="240" cy="690" rx="190" ry="44" fill="light-dark(#e2b871,#4c3d29)"/><ellipse cx="240" cy="684" rx="160" ry="32" fill="light-dark(#efcd8e,#5d4b33)"/>
 </svg>`;
 let sayTok=0;
-function say(text,ok){const b=document.getElementById('bubble');if(!b)return;b.classList.toggle('ok',!!ok);const t=++sayTok;b.textContent='';let i=0;const chars=[...text];
+function say(text,ok){const b=document.getElementById('bubble');if(!b)return;b.parentElement.classList.toggle('ok',!!ok);const t=++sayTok;b.textContent='';let i=0;const chars=[...text];
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;if(reduce){b.textContent=text;return}
   (function step(){if(t!==sayTok)return;b.textContent=chars.slice(0,++i).join('');if(i<chars.length)setTimeout(step,22)})()}
 function mood(state,level){
@@ -411,7 +412,7 @@ function haggleView(L){
   return`<div class="encwrap"><div class="scene st-idle">${BG}<div class="flash"></div>
   <div class="hud"><a href="#item-${esc(L.id)}" aria-label="상품으로 돌아가기">‹</a><div class="chip"><span class="em">${esc(L.emoji)}</span><div><b>${esc(L.title)}</b><span>판매가 ${won(L.price)} · <span data-dl="${L.deadline}">${left(L.deadline-Date.now())}</span></span></div></div></div>
   <div class="meter" aria-label="선인장 화남 게이지">${'<i></i>'.repeat(5)}</div>
-  <div class="stagearea"><div class="bubble" id="bubble" aria-live="polite"></div>${CACTUS}</div>
+  <div class="stagearea"><div class="bubble" id="bubwrap"><div class="bt" id="bubble" aria-live="polite"></div></div>${CACTUS}</div>
   <form class="sheet" id="askf"><div class="chips">${pct.map((v,i)=>`<button type="button" data-amt="${v}">-${[3,5,10,15][i]}% ${won(v)}</button>`).join('')}</div>
   <div class="ask"><input class="amt" id="amt" name="amt" type="number" inputmode="numeric" step="1000" min="1000" placeholder="제안 가격 (원)" required><button id="send">제안하기</button></div>
   <input id="msg" name="msg" maxlength="120" placeholder="한마디 (선택) · 예: 오늘 바로 직거래 가능해요">
